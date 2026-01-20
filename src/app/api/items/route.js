@@ -23,25 +23,38 @@ export async function GET() {
   }
 }
 
-// POST: Create new item
-
 export async function POST(request) {
   try {
     const itemCollection = await connect("items");
     const body = await request.json();
-    const { message } = body;
+
+    const { name, category, price, stock, rating, status, img } = body;
 
     // Validation
-    if (!message || typeof message !== "string") {
+    if (
+      !name ||
+      !category ||
+      price === undefined ||
+      stock === undefined ||
+      rating === undefined ||
+      !status ||
+      !img
+    ) {
       return Response.json(
-        { message: "please send a valid message" },
+        { message: "All fields are required" },
         { status: 400 },
       );
     }
 
     const newItem = {
-      message,
-      date: new Date(),
+      name,
+      category,
+      price: Number(price),
+      stock: Number(stock),
+      rating: Number(rating),
+      status,
+      img,
+      createdAt: new Date(),
     };
 
     const result = await itemCollection.insertOne(newItem);
@@ -52,19 +65,16 @@ export async function POST(request) {
     return Response.json(
       {
         success: true,
-        insertedId: result.insertedId
-          ? result.insertedId.toString()
-          : result.insertedId,
-        item: {
-          ...newItem,
-          _id: result.insertedId ? result.insertedId.toString() : undefined,
-        },
+        message: "Item added successfully",
+        insertedId: result.insertedId,
       },
       { status: 201 },
     );
   } catch (error) {
+    console.error("POST ITEM ERROR:", error);
+
     return Response.json(
-      { message: "Something went wrong", error: error.message },
+      { success: false, message: "Failed to add item" },
       { status: 500 },
     );
   }

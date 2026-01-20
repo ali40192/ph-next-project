@@ -9,13 +9,22 @@ function NavLink({ href, children }) {
   return (
     <Link
       href={href}
-      className={`transition-colors ${
-        active
-          ? "text-black font-semibold border-b-2 border-black"
-          : "text-gray-600 hover:text-gray-900"
-      }`}
+      className={`relative px-1 py-2 transition-all duration-300
+        ${
+          active
+            ? "text-black font-semibold"
+            : "text-gray-600 hover:text-gray-900"
+        }
+      `}
     >
       {children}
+
+      {/* underline animation */}
+      <span
+        className={`absolute left-0 -bottom-1 h-[2px] bg-black transition-all duration-300
+          ${active ? "w-full" : "w-0 group-hover:w-full"}
+        `}
+      />
     </Link>
   );
 }

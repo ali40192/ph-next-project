@@ -18,7 +18,7 @@ const Items = async () => {
   return (
     <section className="w-3/4 mx-auto my-10">
       <h1 className="font-bold text-center text-2xl my-8">All Items here</h1>
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
         {items.map((item) => (
           <ItemCard key={item._id} item={item} />
         ))}

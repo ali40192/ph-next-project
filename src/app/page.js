@@ -1,6 +1,10 @@
 import About from "@/components/About";
 import Banner from "@/components/Banner";
+import CallToAction from "@/components/CallToAction";
+import HowItWorks from "@/components/HowItWorks";
 import ItemCard from "@/components/ItemCard";
+import ItemsPreview from "@/components/ItemsPreview";
+import Testimonials from "@/components/Testimonials";
 
 async function getSixItems() {
   const res = await fetch(`http://localhost:3000/api/items/six`, {
@@ -15,35 +19,53 @@ async function getSixItems() {
 }
 export default async function Home() {
   const items = await getSixItems();
+
+  const reviews = [
+    {
+      name: "Alice Johnson",
+      title: "Software Engineer",
+      text: "This app is amazing! It helped me manage all my items effortlessly.",
+      image: "https://randomuser.me/api/portraits/women/68.jpg",
+    },
+    {
+      name: "Bob Smith",
+      title: "Product Manager",
+      text: "Super clean UI and extremely fast. Highly recommended!",
+      image: "https://randomuser.me/api/portraits/men/75.jpg",
+    },
+    {
+      name: "Clara Lee",
+      title: "Entrepreneur",
+      text: "I love using this app for my inventory. Easy and intuitive!",
+      image: "https://randomuser.me/api/portraits/women/45.jpg",
+    },
+  ];
+
   return (
     <section>
       <Banner />
       <main className="p-10 space-y-10 text-center">
-        <section className="min-h-screen bg-gray-50 py-16">
-          <div className="max-w-7xl mx-auto px-6">
-            {/* Page Header */}
-            <div className="mb-10 text-center">
-              <h2 className="text-3xl font-bold text-gray-800">Latest Items</h2>
-              <p className="text-gray-500 mt-2">
-                Explore our recently added items
-              </p>
-            </div>
-
-            {/* Items Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-              {items?.map((item) => (
-                <ItemCard key={item._id} item={item} />
-              ))}
-            </div>
-          </div>
+        <section>
+          <ItemsPreview items={items} />
         </section>
         <section>
           <About />
         </section>
-        <section>How It Works</section>
-        <section>Items Preview</section>
-        <section>Testimonials</section>
-        <section>Call To Action</section>
+        <section>
+          <HowItWorks />
+        </section>
+
+        <section>
+          <Testimonials reviews={reviews} />
+        </section>
+        <section>
+          <CallToAction
+            title="Boost Your Productivity Today"
+            subtitle="Add and manage items seamlessly in one place."
+            buttonText="Add Your First Item"
+            buttonLink="/add-item"
+          />
+        </section>
       </main>
     </section>
   );
